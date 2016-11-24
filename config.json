@@ -1,0 +1,13 @@
+{
+  "persistence": {
+    "database": "OpenBaltimore",
+    "username": "anonymous",
+    "password": "I_@m_@n0nym0us!",
+    "options": { "dialect": "mysql",
+                 "pool": { "min": 1,
+                           "max": 10,
+                           "idle": 10000 } } },
+  "web_server": {
+    "port": 3030
+  }
+}

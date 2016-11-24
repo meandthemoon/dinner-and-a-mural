@@ -1,0 +1,19 @@
+#!/bin/bash
+
+un="anonymous" # username={{appUser}}
+pw="I_@m_@n0nym0us!" # password={{appUserPassword}}
+database="OpenBaltimore" # database={{databaseName}}
+
+username=$1
+password="HisnameisEddy!"
+
+### setup
+initialize="CREATE DATABASE $database;"
+initialize+="CREATE USER '$un'@'localhost' IDENTIFIED BY '$pw';"
+initialize+="GRANT ALL PRIVILEGES ON $database.* TO '$un'@'localhost';"
+mysql -u $username -p -e "$initialize"
+
+### remove
+# uninstall="DROP DATABASE $database;"
+# uninstall+="DROP USER '$un'@'localhost';"
+# mysql -u $username -p -e "$initialize"

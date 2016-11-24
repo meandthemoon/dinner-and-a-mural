@@ -1,17 +1,34 @@
 #!/usr/bin/env node
 
-var app = require('../main');
-var debug = require('debug')('join-the-team-p4-nodejs:server');
-var http = require('http');
+var
+http = require('http'),
+debug = require('debug')('join-the-team-p4-nodejs:server');
 
-var port = normalizePort('3030');
-app.set('port', port);
+var
+port = normalizePort('3030'),
+config = require('../config'),
+dbConnect = require('../db'),
+routes = require('../routes'),
+app = require('../main')(config);
 
-var server = http.createServer(app);
+app.set('port', config.web_server.port);
 
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
+dbConnect(config.persistence)
+  .then(function ( instance ) {
+
+    routes(app, instance.models);
+
+    var
+    server = http.createServer(app);
+    server.on('error', onError.bind(null, server));
+    server.on('listening', onListening.bind(null, server));
+    server.listen(port);
+
+  })
+  .catch(function ( ) {
+    console.log('database sync error...');
+    console.log(arguments);
+  });
 
 function normalizePort(val) {
   var port = parseInt(val, 10);
@@ -29,7 +46,7 @@ function normalizePort(val) {
   return false;
 }
 
-function onError(error) {
+function onError ( server, error ) {
   if (error.syscall !== 'listen') { throw error; }
 
   var bind = typeof port === 'string' ?
@@ -55,7 +72,7 @@ function onError(error) {
  * Event listener for HTTP server "listening" event.
  */
 
-function onListening() {
+function onListening ( server ) {
   var addr = server.address();
   var bind = typeof addr === 'string' ?
       'pipe ' + addr :

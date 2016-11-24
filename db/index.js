@@ -1,21 +1,27 @@
-var Sequelize = require('sequelize');
+var
+Database = require('sequelize'),
+r = require('ramda');
 
-// module factory
-var db = module.exports = function ( userConfig ) {
-  var _config = { database: 'openBaltimore',     
-                  username: 'anon',
-                  password: 'I_@m_@n0N',
-                  options: { dialect: 'mysql',
-                             pool: { min: 1,
-                                     max: 10,
-                                     idle: 10000 } } };
-
-  db.instance = (function ( config ) {
-    return new Sequelize(config.database,
-                         config.username,
-                         config.password,
-                         config.options || _config.options);
-  }(userConfig || _config));
+/* Factory: Returns a promise that resolves upon database connection.
+   Params: Sequelize configuration options */
+var db = module.exports = r.partial(function ( schema, config ) {
+  if (!config) {
+    throw Error('Configuration required for database connection.'); }
   
-  return db;
-};
+  db.instance = new Database(config.database,
+                             config.username,
+                             config.password,
+                             config.options);
+
+  db.defineModel = r.curry(function ( instance, memo, schemaOptions ) {
+    var defineArgs = schemaOptions.definition;
+    return r.assoc(schemaOptions.name,
+                   instance.define.apply(instance, defineArgs),
+                   memo);
+  });
+
+  db.models = r.reduce(db.defineModel(db.instance), {}, schema);
+
+  return db.instance.sync();
+
+}, [require('./schema')]);
