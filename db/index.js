@@ -11,12 +11,12 @@ var db = module.exports = r.partial(function ( schema, config ) {
   db.instance = new Database(config.database,
                              config.username,
                              config.password,
-                             config.options);
+                             r.assoc('logging', r.identity, config.options));
 
-  db.defineModel = r.curry(function ( instance, memo, schemaOptions ) {
-    var defineArgs = schemaOptions.definition;
-    return r.assoc(schemaOptions.name,
-                   instance.define.apply(instance, defineArgs),
+  db.defineModel = r.curry(function ( instance, memo, definition ) {
+    return r.assoc(definition.modelName,
+                   instance.define(definition.modelName,
+                                   definition.schema),
                    memo);
   });
 

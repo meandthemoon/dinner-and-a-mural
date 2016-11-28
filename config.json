@@ -9,5 +9,8 @@
                            "idle": 10000 } } },
   "web_server": {
     "port": 3030
+  },
+  "open_baltimore": {
+    "X-App-Token": "fFMCeyO16TyLUVSpGu2Kaz77J"
   }
 }

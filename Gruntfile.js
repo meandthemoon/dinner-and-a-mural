@@ -3,16 +3,16 @@ module.exports = function( grunt ) {
     exec: { 
       create: {
         cmd: function ( admin ) {
-          return './create ' + admin;
+          return './scripts/create ' + admin;
         }},
       destroy: {
         cmd: function ( admin ) {
-          return './destroy ' + admin;
+          return './scripts/destroy ' + admin;
         }},
       import: {
-        cmd: 'node importer-exporter.js importer' },
+        cmd: 'node scripts/importer-exporter.js -i' },
       export: {
-        cmd: 'node importer-exporter.js exporter' }
+        cmd: 'node scripts/importer-exporter.js -e' }
     }
   });
 

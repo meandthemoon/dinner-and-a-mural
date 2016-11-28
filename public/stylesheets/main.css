@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: #333;
+}
+
+input.search {
+    border: none;
+    line-height: 2em;
+    padding: 0 10px;
+    border-radius: 2px;
+    background: #111;
+    color: #eeaa66;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    float: left;
+}
+
+._button {
+    border: 1px solid #222;
+    border-radius: 2px;
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #999999;
+    display: inline-block;
+}
+
+#app {
+    height: 1000px;
+    width: 100%;
+}
+
+#map {
+    position: relative;
+    height: 500px;
+    width: 100%;
+}
+
+.workspace {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.workspace .toolbar {
+    padding: 1em 0;
+    margin: 1em 0;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.murals,
+#restaurants {
+    height: calc(100% - 500px);
+    overflow: scroll;
+    width: 100%;
+}
+
+.murals table { width: 100%; }
+
+.murals thead th,
+#restaurants thead th {
+    color: #eeaa66;
+}
+
+.murals tbody tr,
+#restaurants tbody tr {
+    background: #444444;
+    color: #dd9955;
+}
+
+.murals tbody tr:hover,
+#restaurants tbody tr:hover {
+    background: #005f5f;
+    /* color: #dd9955; */
+}
