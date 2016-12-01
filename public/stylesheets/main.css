@@ -1,52 +1,89 @@
+/* elements */
 body {
     margin: 0;
     padding: 0;
     background: #333;
+    color: #caca86;
 }
 
-input.search {
-    border: none;
+p {
+    margin: .5em 0;
+}
+
+body,
+input {
+    font-family: 'Roboto Mono', monospace;
+}
+
+/* input.search { */
+/*     border: none; */
+/*     line-height: 2em; */
+/*     padding: 0 10px; */
+/*     border-radius: 2px; */
+/*     background: #111; */
+/*     color: #eeaa66; */
+/* } */
+
+input[type='text'] {
+    border: 3px solid #ab85a3; 
+    border-radius: 2px;
     line-height: 2em;
-    padding: 0 10px;
-    border-radius: 2px;
-    background: #111;
-    color: #eeaa66;
+    min-width: 50%;
+    padding: .2em 2em;
+    font-size: 15pt;
+    background: #dadada;
 }
 
-ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+table {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
 }
 
-li {
-    float: left;
-}
-
-._button {
-    border: 1px solid #222;
-    border-radius: 2px;
-    margin: 5px;
-    padding: 5px 10px;
+tbody tr {
     cursor: pointer;
-    color: #999999;
-    display: inline-block;
+    vertical-align: top;
 }
 
-#app {
-    height: 1000px;
-    width: 100%;
+tbody tr:hover {
+    
+    background: #005f5f;
+    /* color: #dd9955; */
 }
 
-#map {
-    position: relative;
-    height: 500px;
-    width: 100%;
+/* theme */
+.margin1 {
+    margin: .5em;
+    padding: .5em;
+}
+
+.hover-color-grey:hover {
+    color: 
+}
+
+.margin1.list-view {
+    border-bottom: 3px solid #af5f5f;
+    max-height: 400px;
+    overflow: auto;
 }
 
 .workspace {
-    width: 90%;
-    margin: 0 auto;
+    position: absolute;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+}
+
+.top {
+    top: 0;
+}
+
+.bottom {
+    bottom: 0;
+}
+
+.top.banner {
+    border-bottom: 1px solid #d7d787;
 }
 
 .workspace .toolbar {
@@ -56,28 +93,31 @@ li {
     margin: 0 auto;
 }
 
-.murals,
-#restaurants {
-    height: calc(100% - 500px);
-    overflow: scroll;
+#app {
     width: 100%;
 }
 
-.murals table { width: 100%; }
-
-.murals thead th,
-#restaurants thead th {
-    color: #eeaa66;
+#map {
+    position: relative;
+    height: 100%;
 }
 
-.murals tbody tr,
-#restaurants tbody tr {
-    background: #444444;
-    color: #dd9955;
-}
+/* .murals, */
+/* #restaurants { */
+/*     height: calc(100% - 500px); */
+/*     overflow: scroll; */
+/*     width: 100%; */
+/* } */
 
-.murals tbody tr:hover,
-#restaurants tbody tr:hover {
-    background: #005f5f;
-    /* color: #dd9955; */
-}
+/* .murals table { width: 100%; } */
+
+/* .murals thead th, */
+/* #restaurants thead th { */
+/*     color: #eeaa66; */
+/* } */
+
+/* .murals tbody tr, */
+/* #restaurants tbody tr { */
+/*     background: #444444; */
+/*     color: #dd9955; */
+/* } */

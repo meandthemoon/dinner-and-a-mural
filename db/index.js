@@ -14,10 +14,10 @@ var db = module.exports = r.partial(function ( schema, config ) {
                              r.assoc('logging', r.identity, config.options));
 
   db.defineModel = r.curry(function ( instance, memo, definition ) {
-    return r.assoc(definition.modelName,
-                   instance.define(definition.modelName,
-                                   definition.schema),
-                   memo);
+    return r.assoc(
+      definition.modelName,
+      instance.define(definition.modelName, definition.schema),
+      memo);
   });
 
   db.models = r.reduce(db.defineModel(db.instance), {}, schema);

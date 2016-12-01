@@ -1,7 +1,9 @@
 var r = require('ramda');
 
+// : factory
+// : dependent on data models and router to which
+// to register handlers
 var api = module.exports = function ( models, router ) {
-
   var
   getModel = r.prop(r.__, models),
   muralQuery = r.partial(r.__, [getModel('Mural')]),
@@ -19,9 +21,6 @@ var api = module.exports = function ( models, router ) {
                          r.assoc('where', filter),
                          r.identity)
               )({});
-
-console.log(options);
-
               return Model.findAll(options);
             })),
 
@@ -56,6 +55,32 @@ console.log(options);
                   error: error,
                   stack: error.stack });
 
+      });
+  });
+
+  router.get('/restaurants', function ( req, res, next ) {
+    var search = req.query.search;
+    if (!search) {
+      res.status(400).send({ message: 'send search param' }); }
+
+    api.handlers
+      .getRestaurants(
+        null, // select *
+        { $or: [
+          { location_1_location: { $like:'%'+search+'%' }},
+          { name:                { $like:'%'+search+'%' }},
+          { neighborhood:        { $like:'%'+search+'%' }}
+        ]})
+      .then(function ( results ) {
+        res.json(results);
+      })
+      .catch(function ( error ) {
+        console.log(error);
+        return res
+          .status(500)
+          .send({ message: 'ERROR',
+                  error: error,
+                  stack: error.stack });
       });
   });
 

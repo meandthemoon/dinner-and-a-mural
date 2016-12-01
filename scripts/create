@@ -5,7 +5,6 @@ pw="I_@m_@n0nym0us!" # password={{appUserPassword}}
 database="OpenBaltimore" # database={{databaseName}}
 
 username=$1
-password="HisnameisEddy!"
 
 ### setup
 initialize="CREATE DATABASE IF NOT EXISTS $database;"
@@ -13,7 +12,10 @@ initialize+="CREATE USER IF NOT EXISTS '$un'@'localhost' IDENTIFIED BY '$pw';"
 initialize+="GRANT ALL PRIVILEGES ON $database.* TO '$un'@'localhost';"
 mysql -u $username -p -e "$initialize"
 
+echo " - Creating database and user"
+
 ### remove
 # uninstall="DROP DATABASE $database;"
 # uninstall+="DROP USER '$un'@'localhost';"
 # mysql -u $username -p -e "$initialize"
+
