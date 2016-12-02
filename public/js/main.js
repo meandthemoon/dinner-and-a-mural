@@ -70,93 +70,93 @@ window.initMapView = (function ( state ) {
   };
 }());
 
-window.daamRestaurants = (function ( state, ui ) {
-  var
-  restaurants = ui.select('#restaurants').append('div'),
-  tableView = restaurants.append('table'),
-  viewHeading = tableView.append('tbody'),
-  viewBody = tableView.append('tbody');
+// window.daamRestaurants = (function ( state, ui ) {
+//   var
+//   restaurants = ui.select('#restaurants').append('div'),
+//   tableView = restaurants.append('table'),
+//   viewHeading = tableView.append('tbody'),
+//   viewBody = tableView.append('tbody');
 
-  return {
-    // search for restaurants
-    search: (function ( state ) {
-      var
-      parseJson = function ( xhr ) {
-        return JSON.parse(xhr.responseText);
-      },
-      path = '/api/restaurants';
+//   return {
+//     // search for restaurants
+//     search: (function ( state ) {
+//       var
+//       parseJson = function ( xhr ) {
+//         return JSON.parse(xhr.responseText);
+//       },
+//       path = '/api/restaurants';
 
-      return function ( search ) {
-        if (state.req) { state.req.abort(); }
+//       return function ( search ) {
+//         if (state.req) { state.req.abort(); }
 
-        var query = '?search='+search;
-        state.req = ui.request(path+query)
-          .header('Content-Type', 'application/json')
-          .response(parseJson)
-          .get(function ( error, results ) {
-            if (!error) {
-              daamRestaurants.render(viewBody, results);
-            } else {
-              alert(' HTTP ERROR Restaruants are broken :('); }
-          });
-      };
-    }({})),
+//         var query = '?search='+search;
+//         state.req = ui.request(path+query)
+//           .header('Content-Type', 'application/json')
+//           .response(parseJson)
+//           .get(function ( error, results ) {
+//             if (!error) {
+//               daamRestaurants.render(viewBody, results);
+//             } else {
+//               alert(' HTTP ERROR Restaruants are broken :('); }
+//           });
+//       };
+//     }({})),
 
-    render: function ( tbody, data ) {
-      if (!data || !data.length) {  return ; }
+//     render: function ( tbody, data ) {
+//       if (!data || !data.length) {  return ; }
 
-      // Bind
-      var rows = tbody.selectAll('tr').data(data);
-      // Enter
-      rows.enter().append('tr');
-      // Update
-      rows
-        .selectAll('td span')
-        .text(function ( d, i, a ) {
-          return d;
-        });
+//       // Bind
+//       var rows = tbody.selectAll('tr').data(data);
+//       // Enter
+//       rows.enter().append('tr');
+//       // Update
+//       rows
+//         .selectAll('td span')
+//         .text(function ( d, i, a ) {
+//           return d;
+//         });
 
-      // Bind
-      var cells = rows.selectAll('td')
-          .data(function ( d, i, a ) {
-            print('cell');
-            print(d);
-            return ['Z',
-                    '_',
-                    d.name,
-                    d.location_1_location,
-                    d.neighborhood];
-          });
+//       // Bind
+//       var cells = rows.selectAll('td')
+//           .data(function ( d, i, a ) {
+//             print('cell');
+//             print(d);
+//             return ['Z',
+//                     '_',
+//                     d.name,
+//                     d.location_1_location,
+//                     d.neighborhood];
+//           });
 
-      // Enter
-      cells.enter().append('td');
-      // Update
-      cells
-        .text(identity)
-        .attr('class', function ( d, i ) {
-          return state.cells.classes[i]; })
-        .style('color', function ( d, i ) {
-          console.log(arguments);
-          return state.cells.colors[i]; });
+//       // Enter
+//       cells.enter().append('td');
+//       // Update
+//       cells
+//         .text(identity)
+//         .attr('class', function ( d, i ) {
+//           return state.cells.classes[i]; })
+//         .style('color', function ( d, i ) {
+//           console.log(arguments);
+//           return state.cells.colors[i]; });
 
-      rows.on('click', function ( d, i, a ) {
-        print(data[i].name);
-        print(data[i].location_1_location);
-        print(data[i].neighborhood);
-      });
+//       rows.on('click', function ( d, i, a ) {
+//         print(data[i].name);
+//         print(data[i].location_1_location);
+//         print(data[i].neighborhood);
+//       });
 
-      // Exit
-      cells.exit().remove();
-      rows.exit().remove();
-    }
-  };
-}({cells: { colors:  ['#596f50', '#596f50', '#caca86', '#857575', '#8d6552'],
-            classes: ['hover-color-grey',
-                      'hover-color-grey',
-                      '',
-                      'hover-color-grey',
-                      'hover-color-grey']}},
-  d3));
+//       // Exit
+//       cells.exit().remove();
+//       rows.exit().remove();
+//     }
+//   };
+// }({cells: { colors:  ['#596f50', '#596f50', '#caca86', '#857575', '#8d6552'],
+//             classes: ['hover-color-grey',
+//                       'hover-color-grey',
+//                       '',
+//                       'hover-color-grey',
+//                       'hover-color-grey']}},
+//   d3));
 
 // initialize and assign global api
 window.daam = (function ( state, ui ) {
@@ -180,8 +180,9 @@ window.daam = (function ( state, ui ) {
 
   var search = ui.select('#search')
       .on('input', function ( ) {
-        if (this.value.length > 2) {
-          daamRestaurants.search(this.value); }
+        var v = this.value;
+        if (v.length > 2) {
+          daamRestaurants.search(v); }
       });
 
 })({}, d3);
@@ -221,9 +222,6 @@ var muralColumns = [
 //       renderMurals(murals);
 //     } else { alert('HTTP Error...'); }
 //   });
-
-
-
 
 var renderMurals = function ( data ) {
 var table =d3

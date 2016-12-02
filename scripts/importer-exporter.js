@@ -50,22 +50,7 @@ request = require('request');
               setTimeout(process.exit.bind(process), 1000);
             });
         })
-        // .then(function ( conn ) {
-        //   connection = conn;
-        //   var data = require('../'+sources[0].saveTo);
-        //   return connection.models[sources[0].name].bulkCreate(data);
-        // })
-        // .then(function ( ) {
-        //   var data = require('../'+sources[1].saveTo);
-        //   return connection.models[sources[1].name].bulkCreate(data);
-        // })
-        // .then(function ( ) {
-        //   return connection.models[sources[0].name].findOne({})
-        //     .then(function ( ) { console.log('inserted...');
-        //                          console.log(arguments[0]);});
-        // })
         .catch(function ( error ) {
-          console.log('in catch');
           throw error;
         });
     },

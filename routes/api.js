@@ -61,7 +61,7 @@ var api = module.exports = function ( models, router ) {
   router.get('/restaurants', function ( req, res, next ) {
     var search = req.query.search;
     if (!search) {
-      res.status(400).send({ message: 'send search param' }); }
+      return res.status(400).send({ message: 'send search param' }); }
 
     api.handlers
       .getRestaurants(
@@ -72,7 +72,7 @@ var api = module.exports = function ( models, router ) {
           { neighborhood:        { $like:'%'+search+'%' }}
         ]})
       .then(function ( results ) {
-        res.json(results);
+        return res.json(results);
       })
       .catch(function ( error ) {
         console.log(error);

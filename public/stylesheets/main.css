@@ -74,17 +74,16 @@ tbody tr:hover {
     right: 0;
 }
 
-.top {
-    top: 0;
+.nothing-found {
+    color: #5f8787;
+    margin: 0 2em;
+    text-align: right;
 }
 
-.bottom {
-    bottom: 0;
-}
-
+.top { top: 0; }
+.bottom { bottom: 0; }
 .top.banner {
-    border-bottom: 1px solid #d7d787;
-}
+    border-bottom: 1px solid #d7d787; }
 
 .workspace .toolbar {
     padding: 1em 0;
