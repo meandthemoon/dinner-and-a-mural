@@ -1,3 +1,21 @@
+##Empty this list into the read me below
+
+[1] search for restaurants in baltimore
+   - see each restaurant, name, street, neighborhood
+   - hover-highlight
+
+
+[2] Display murals
+<nearby>
+    - in same zipcode
+    - by some number of feet, yards, blocks, etc
+[_]
+   - clicking restaurant shows <nearby> murals below
+   - 
+
+
+
+
 # join-the-team-p4-nodejs
 Joining Contrast Security | Project #4 : Language Specialist ( Agent Engineer ) | NodeJS
 
