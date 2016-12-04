@@ -7,7 +7,10 @@ database="OpenBaltimore" # database={{databaseName}}
 username=$1
 
 ### setup
-initialize="CREATE DATABASE IF NOT EXISTS $database;"
+initialize="SET FOREIGN_KEY_CHECKS = 0;"
+initialize+="DROP DATABASE IF EXISTS $database;"
+initialize+="DROP USER IF EXISTS '$un'@'localhost';"
+initialize+="CREATE DATABASE IF NOT EXISTS $database;"
 initialize+="CREATE USER IF NOT EXISTS '$un'@'localhost' IDENTIFIED BY '$pw';"
 initialize+="GRANT ALL PRIVILEGES ON $database.* TO '$un'@'localhost';"
 mysql -u $username -p -e "$initialize"

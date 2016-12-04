@@ -1,11 +1,15 @@
 var exit = process.exit.bind(process);
 
+var r = require('ramda');
 var config = require('../config');
 var googleClient = require('../lib/google-client')(config.google);
 
 var restaurants = require('../datasets/restaurants');
-var addresses = restaurants.map(function ( address ) {
-  return address.location_1_location + ' Baltimore MD';
+var addresses = restaurants.map(function ( restaurant ) {
+  return [restaurant.location_1_location,
+          'Baltimore',
+          'MD',
+          restaurant.neighborhood].join(' ');
 });
 
 googleClient.geocodeAddresses(

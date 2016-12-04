@@ -43,8 +43,7 @@ module.exports = function( grunt ) {
     if (!admin) {
       throw new Error('no --mysql-admin option'); }
 
-    grunt.tasks(['exec:destroy:' + admin,
-                 'exec:create:' + admin,
+    grunt.tasks(['exec:create:' + admin,
                  'exec:import',
                  'exec:export']);
   });

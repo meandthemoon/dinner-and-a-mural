@@ -6,7 +6,7 @@ var r = require('ramda');
 var api = module.exports = function ( models, router ) {
   var
   getModel = r.prop(r.__, models),
-  muralQuery = r.partial(r.__, [getModel('Mural')]),
+  muralQuery = r.partial(r.__, [getModel('PublicArt')]),
   restaurantQuery = r.partial(r.__, [getModel('Restaurant')]);
 
   api.handlers = r.compose(
@@ -40,10 +40,20 @@ var api = module.exports = function ( models, router ) {
   )({});
 
   router.get('/murals', function ( req, res, next ) {
+    var
+    zip = req.query.zip;
+    if (!zip) {
+      return res.status(400)
+        .send({
+          message: 'send filter param',
+          status: 'error'
+        });
+    }
     api.handlers
       .getMurals(
-        null, null,
-        { year: req.query.year })
+        null,
+        { zipcode: req.query.zip,
+          medium: 'mural'})
       .then(function ( results ) {
         res.json(results);
       })
@@ -58,6 +68,8 @@ var api = module.exports = function ( models, router ) {
       });
   });
 
+  // given a search term, returns a collection of restaurants
+  //  whose names, street, or neighborhood match
   router.get('/restaurants', function ( req, res, next ) {
     var search = req.query.search;
     if (!search) {

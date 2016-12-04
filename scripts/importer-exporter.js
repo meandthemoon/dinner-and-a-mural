@@ -1,9 +1,59 @@
 var
 async = require('async'),
 fs = require('fs'),
+r = require('ramda'),
 request = require('request');
 
+var addGeoLookup = require('../datasets/address-locations');
+
 (function main ( config, dbConnect, sources ) {
+
+  // minimal amount of data normalizing
+  var transformations = {
+    Mural: function ( data ) {
+      return r.map(function ( d ) {
+        return r.assoc('locationpoint', d.location_1, d);
+      }, data);
+    },
+    Restaurant: function ( data ) {
+      return r.map(function ( d ) {
+        var
+        key = d.location_1_location +
+          '+Baltimore+MD+' +
+          r.compose(r.join('+'),
+                    r.split(/\s/))(d.neighborhood),
+
+        location = (r.path([key, 'geometry', 'location'],
+                           addGeoLookup) ||
+                    r.compose(
+                      r.ifElse(r.isNil, r.identity,
+                               r.path(['geometry', 'location'])),
+                      r.head,
+                      r.propOr([], 'results'),
+                      r.prop(key))(addGeoLookup));
+
+        return (location ?
+                r.assoc('locationpoint',
+                        { type: 'Point',
+                          coordinates: [location.lng, location.lat ] },
+                        d)
+                : d);
+      }, data);
+    },
+    PublicArt: function ( data ) {
+      return r.map(function ( d ) {
+        var
+        primaryZip = /\d{5}/.exec(d.zipcodes || ''),
+        title = (!d.titleofartwork ||
+                 d.titleofartwork === 'Unknown') ? null : d.titleofartwork;
+        return r.compose(
+          r.assoc('titleofartwork', title),
+          r.assoc('locationpoint', d.location),
+          r.assoc('zipcode', primaryZip))(d);
+      }, data);
+    }
+  };
+
   var
   flag = process.argv[2],
   handlers = {
@@ -28,9 +78,14 @@ request = require('request');
       var
       connection,
       save = function ( source, next ) {
-        var data = require('../'+source.saveTo);
+        var
+        transform = transformations[source.name] ?
+          transformations[source.name] :
+          r.identity;
+          
+        data = require('../'+source.saveTo);
         connection.models[source.name]
-          .bulkCreate(data)
+          .bulkCreate(transform(data))
           .then(function ( ) {
             console.log(' -', source.name, 'data saved to database');
           })

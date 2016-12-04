@@ -1,5 +1,6 @@
 {
   "google": {
+    "key": "AIzaSyBBLQ4nGVBlW17cw7NEDzvnBKx5e4gwcfo",
     "geocode_service_url": "https://maps.googleapis.com/maps/api/geocode/json"
   },
   "persistence": {
@@ -15,5 +16,6 @@
   },
   "open_baltimore": {
     "X-App-Token": "fFMCeyO16TyLUVSpGu2Kaz77J"
-  }
+  },
+  "city-state": "Baltimore MD"
 }
