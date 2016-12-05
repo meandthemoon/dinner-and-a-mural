@@ -4,7 +4,7 @@
   "description": "Joining Contrast Security | Project #4 : Language Specialist ( Agent Engineer ) | NodeJS",
   "scripts": {
     "setup": "node ./importer",
-    "run": "",
+    "run": "node --harmony ./bin/www",
     "start": "node ./bin/www",
     "test": "test"
   },
