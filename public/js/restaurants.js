@@ -1,12 +1,11 @@
-window.daamRestaurants = (function ( ui, state ) {
-
-  var
+window.daamRestaurants = function ( ui, state ) {
+  var // UI
   restaurants = ui.select('#restaurants'),
   tableView = restaurants.append('div').append('table'),
   thead = tableView.append('thead')
     .append('tr')
     .selectAll('td')
-    .data(['name', 'address', 'neighborhood'])
+    .data(['Restaurant', 'Address', 'Neighborhood'])
     .enter().append('td').text(String),
   emptyView = restaurants.append('div')
     .style('display', 'none')
@@ -14,8 +13,7 @@ window.daamRestaurants = (function ( ui, state ) {
     .text('... no results'),
   viewBody = tableView.append('tbody');
 
-  // API
-  return {
+  var api = {
     // search for restaurants
     search: (function ( mystate ) {
       var
@@ -24,27 +22,26 @@ window.daamRestaurants = (function ( ui, state ) {
       },
       path = '/api/restaurants';
 
-      return function ( search ) {
+      return function restarauntSearch ( search ) {
         if (mystate.req) { mystate.req.abort(); }
-        var query = '?search='+search;
 
-        // state.channels.Search(search);
+        var query = '?search='+search;
 
         mystate.req = ui.request(path+query)
           .header('Content-Type', 'application/json')
           .response(parseJson)
           .get(function ( error, results ) {
             if (!error) {
-              daamRestaurants.render(results);
+              api.render(results);
             } else {
-              alert(' HTTP ERROR Restaurants are broken :('); }
+              alert(' HTTP ERROR - Restaurants are broken :('); }
           });
       };
     }({ req: null })),
 
     render: (function ( mystate ) {
-      return function ( data ) {
-        // state.channels.restaurantsChange(data);
+      return function renderRestaurant ( data ) {
+        state.channels.RestaurantList.put(data);
 
         restaurants.style('display', 'block');
 
@@ -84,40 +81,13 @@ window.daamRestaurants = (function ( ui, state ) {
         newRowCells.text(String);
         
         newRows.on('click', function ( d, i ) {
-          daamMurals.search(d.zipcode);
+          console.log('r-clicked');
+          console.log(d.name);
           if (d.locationpoint) {
-            new (google.maps.Marker)({
-              position: {
-                lng: d.locationpoint.coordinates[0],
-                lat: d.locationpoint.coordinates[1]
-              },
-              icon: mystate.marker.icon,
-              map: map
-            });
+            state.channels.ActiveRestaurant.put(d);
           }
         });
-        rows.on('click', function ( d, i ) {
-          daamMurals.search(d.zipcode);
-          if (d.locationpoint) {
-            new (google.maps.Marker)({
-              position: {
-                lng: d.locationpoint.coordinates[0],
-                lat: d.locationpoint.coordinates[1]
-              },
-              icon: mystate.marker.icon,
-              map: map
-            });
-          }
-        });
-
-        rows.selectAll('.map-r')
-          .on('click', function ( d, i, a ) {
-            // console.log('cell data: ', d);
-            // console.log('');
-            // console.log('parent data:');
-            // console.log(ui.select(this.parentNode).datum());
-          });
-
+        
         rows.exit().remove();
 
         function makeCellData ( d, i, a ) {
@@ -127,15 +97,16 @@ window.daamRestaurants = (function ( ui, state ) {
                   'DEL'];
         }
       };
-    }({ cells: { colors: ['#caca86',
-                          '#857575',
-                          '#8d6552',
-                          '#870000'],
-                 classes: ['r-name',
-                           '',
-                           '',
-                           'del-r']},
-        marker: { icon: 'http://labs.google.com/ridefinder/images/mm_20_yellow.png' }}))
+    }({
+      cells: {
+        colors: ['#caca86','#857575', '#8d6552', '#870000'],
+        classes: ['r-name', 'r-address', 'r-hood', 'del-r']},
+      marker: {
+        icon: 'http://labs.google.com/ridefinder/images/mm_20_yellow.png' }}))
   };
 
-}(d3, {}));
+  // take from the search channel
+  state.channels.Search.take(api.search);
+  
+  return api;
+};

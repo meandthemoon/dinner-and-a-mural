@@ -1,12 +1,11 @@
-var daamMurals = (function ( ui, state ) {
-
-  var
+var daamMurals = function ( ui, state ) {
+  var // UI
   murals = ui.select('#murals'),
   tableView = murals.append('div').append('table'),
   thead = tableView.append('thead')
     .append('tr')
     .selectAll('td')
-    .data(['title', 'address', 'artist(s)'])
+    .data(['Artwork Title', 'Address', 'Artist(s)'])
     .enter().append('td').text(String),
   
   emptyView = murals.append('div')
@@ -15,7 +14,11 @@ var daamMurals = (function ( ui, state ) {
     .text('... no results'),
   viewBody = tableView.append('tbody');
 
-  return {
+  var
+  artworks = null,
+  settings = {};
+
+  var api = {
     search: (function ( mystate ) {
       var
       parseJson = function ( xhr ) {
@@ -25,19 +28,37 @@ var daamMurals = (function ( ui, state ) {
 
       return function ( search ) {
         if (mystate.req) { mystate.req.abort(); }
-
         var query = '?zip='+search;
-        mystate.req = ui.request(path+query)
+        mystate.req = ui.request(path)
           .header('Content-Type', 'application/json')
           .response(parseJson)
           .get(function ( error, results ) {
             if (!error) {
-              daamMurals.render(results);
+              artworks = results;
+            } else {
+              alert(' HTTP ERROR - Murals are broken :('); }
+          });
+      };
+    }({})),
+
+    loadArtworks: (function ( ) {
+      var
+      parseJson = function ( xhr ) {
+        return JSON.parse(xhr.responseText);
+      },
+      path = '/api/murals';
+      return function ( search ) {
+        ui.request(path)
+          .header('Content-Type', 'application/json')
+          .response(parseJson)
+          .get(function ( error, results ) {
+            if (!error) {
+              artworks = results;
             } else {
               alert(' HTTP ERROR Murals are broken :('); }
           });
       };
-    }({})),
+    }()),
 
     render: (function ( mystate ) {
       return function ( data ) {
@@ -75,33 +96,10 @@ var daamMurals = (function ( ui, state ) {
         cells.text(identity);
         newRowCells.text(String);
 
-        rows
-          .on('click', function ( d, i ) {
-            // console.log(d);
-            // console.log(this);
-            // daamMurals.search(d.zipcode);
-          });
+        rows.on('click', function ( d, i ) { });
 
         rows.exit().remove();
-
-        data.forEach(function ( item ) {
-          if (item.locationpoint) {
-            console.log({position: {
-              lng: item.locationpoint.coordinates[0],
-              lat: item.locationpoint.coordinates[1]
-            }});
-
-            new (google.maps.Marker)({
-              position: {
-                lng: item.locationpoint.coordinates[0],
-                lat: item.locationpoint.coordinates[1]
-              },
-              icon: mystate.marker.icon,
-              map: map,
-              title: getPinTitle(item)
-            });
-          }});
-
+        
         function makeCellData ( d, i, a ) {
           return [getTitle(d), d.addressofartwork, getCredits(d)];
         }
@@ -134,7 +132,19 @@ var daamMurals = (function ( ui, state ) {
         marker: { icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png' }}))
   };
 
-}(d3,
-  { channels: {
-    muralsChange: function ( ) {
-    } } }));
+  api.loadArtworks();
+
+  state.channels.ActiveRestaurant.take(function muralSearch ( r ) {
+    var artworkList = artworks.filter(function ( a ) {
+      // NICE-TO-HAVE
+      // Base this filter on settings:
+      //  w/in walking radius etc
+      return r.zipcode === a.zipcode;
+    });
+    
+    api.render(artworkList);
+    state.channels.ArtworkList.put(artworkList);
+  });
+
+  return api;
+};

@@ -12,12 +12,15 @@ window.channel = function ( ) {
   return {
     // put data on the channel
     put: function ( data ) {
+      // console.log('put on channel data');
+      // console.log(data);
       takes.forEach(function ( fnOfData ) {
         safeTake.apply(null, [fnOfData, data]);
       });
     },
     // `take` data from the channel via named fn 
     take: function ( fnOfData ) {
+      if (!fnOfData.name) { console.warn('no name'); }
       takes.push(fnOfData);
     },
     // removed named fn from `takes` list

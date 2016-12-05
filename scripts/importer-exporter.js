@@ -23,6 +23,9 @@ var addGeoLookup = require('../datasets/address-locations');
           r.compose(r.join('+'),
                     r.split(/\s/))(d.neighborhood),
 
+        // Value may be in different paths within
+        // the dataset, depending on Google's
+        // address-to-geolocation web API response:
         location = (r.path([key, 'geometry', 'location'],
                            addGeoLookup) ||
                     r.compose(

@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-    background: #333;
+    background: #333333;
     color: #caca86;
     color: #bdbdb3;
 }
@@ -19,7 +19,7 @@ input[type='text'] {
     border: 3px solid #ab85a3;
     border-radius: 2px;
     line-height: 2em;
-    min-width: 50%;
+    min-width: 65%;
     padding: .2em 2em;
     font-size: 15pt;
     background: #dadada;
@@ -69,6 +69,7 @@ tbody tr:hover {
 }
 
 .workspace {
+    border-left: 3px solid #af5f5f;
     position: absolute;
     overflow: hidden;
     top: 0;

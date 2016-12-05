@@ -10,7 +10,6 @@ var api = module.exports = function ( models, router ) {
   restaurantQuery = r.partial(r.__, [getModel('Restaurant')]);
 
   api.handlers = r.compose(
-
     r.assoc('getMurals',
             muralQuery(function ( Model, projections, filter ) {
               var options = r.compose(
@@ -39,21 +38,17 @@ var api = module.exports = function ( models, router ) {
 
   )({});
 
-  router.get('/murals', function ( req, res, next ) {
-    var
-    zip = req.query.zip;
-    if (!zip) {
-      return res.status(400)
-        .send({
-          message: 'send filter param',
-          status: 'error'
-        });
-    }
+  // 
+  router.get('/murals', function ( req, res, _ ) {
     api.handlers
-      .getMurals(
-        null,
-        { zipcode: req.query.zip,
-          medium: 'mural'})
+      .getMurals(['id',
+                  'addressofartwork',
+                  'artistfirstname',
+                  'artistlastname',
+                  'titleofartwork',
+                  'locationpoint',
+                  'zipcode'],
+                 null)
       .then(function ( results ) {
         res.json(results);
       })
@@ -70,13 +65,15 @@ var api = module.exports = function ( models, router ) {
 
   // given a search term, returns a collection of restaurants
   //  whose names, street, or neighborhood match
-  router.get('/restaurants', function ( req, res, next ) {
+  router.get('/restaurants', function ( req, res, _ ) {
     var search = req.query.search;
     if (!search) {
       return res.status(400).send({ message: 'send search param' }); }
 
     api.handlers
       .getRestaurants(
+        // REFACTOR
+        // Limit attributes
         null, // select *
         { $or: [
           { location_1_location: { $like:'%'+search+'%' }},
@@ -96,9 +93,6 @@ var api = module.exports = function ( models, router ) {
       });
   });
 
-  // events...
-
   return api;
-
 };
 
