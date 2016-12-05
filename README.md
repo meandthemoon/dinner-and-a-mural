@@ -1,22 +1,35 @@
 # join-the-team-p4-nodejs
 Joining Contrast Security | Project #4 : Language Specialist ( Agent Engineer ) | NodeJS
 
-## SETUP
+## Installing, Testing, and Running the App
 
-In a terminal, `cd` into the root project folder and type `npm setup $mysql-admin`, where `$mysql-admin` represents a MySQL administrator's username. A prompt will request this user's password. When finished, the script should have
+### Assumed Prerequisite Software Installs
 
- 1. created the application's database and an associated user.
- 2. created all of the databse objects used by the application.
- 3. imported datasets from the OpenBaltimore APIs into the database. If the web services are not available to import live data, then the datasets included in the project's `datasets` directory will be used instead. Otherwise these local files will be replaced with the most recent data returned by OpenBaltimore. This provides a way for the default local datasets to update when possible.
+MySQL Server
 
-## TEST
+NodeJS & npm
+
+grunt-cli
+`sudo npm install -g grunt-cli`  
+
+mocha
+`sudo npm install -g mocha` ( required only to run tests )
+
+### Setup
+
+Running the application requires some initial build steps. These include:
+
+ 1. Configuring MySQL by creating the application's database, database tables, and its user account
+ 2. Importing the needed datasets from the OpenBaltimore APIs and export them to into the database
+
+*If the OpenBaltimore web services (or an internet connection) are not available to import live data, then the datasets included in the project's `datasets` directory will be used instead.*
+
+After cloning the project, in a terminal, `cd` into the root project folder and type `grunt build --mysql-admin root`. If the MySQL root administrators password is unknown (or chosen not to be used), run the command using the username of an administrator account with known credentials. When the command executes, a prompt will request the user's password.
+
+### Launching
+
+From the root directory, run `npm run-script run` ( woof! :) ) to start the application. Visit the web app via the URL: `localhost:3030/app.html`.
+
+### Testing
 
 From the root directory, run `npm test` to prompt the full set of unit and integration tests. Test results will be logged to the console.
-
-## RUN
-
-From the root directory, run `npm run` to start the application. Visit the web app via the URL: `localhost:3030/app`.
-
-## Reset DB
-
-From the root directory, run `npm refresh-data` to run step #3 from the Setup steps.
