@@ -1,39 +1,3 @@
-##Empty this list into the read me below
-
-[1] search for restaurants in baltimore
-   - see each restaurant, name, street, neighborhood
-   - hover-highlight
-
-
-[2] Display murals
-<nearby>
-    - in same zipcode
-    - by some number of feet, yards, blocks, etc
-[_]
-   - clicking restaurant shows <nearby> murals below
-   - 
-
-********************* Boosha Notes* ********************************************
-********************************************************************************
-
-1. Potential implementation:
-    Find a way to display distance in the mural output list.  
-    Apply a sort to the mural output list by distance, and Artist Name (?)
-
-2. Center map based on results
-
-3. Change the instructions to make clearer the initial flexibility of searching by restuarant name, street name, or neighborhood
-    3a. Second selection is on selecting a restaurant from the results
-
-4. Have a "clear results" function that clears the results and the map
-
-5. This looks really good :)  Nice job booshk!
-
-********************************************************************************
-********************************************************************************
-
-
-
 # join-the-team-p4-nodejs
 Joining Contrast Security | Project #4 : Language Specialist ( Agent Engineer ) | NodeJS
 
