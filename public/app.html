@@ -16,13 +16,15 @@
 
         <!-- NICE-TO-HAVE -->
         <!-- application settings -->
-        <div id="settings" style="padding: .5em;margin: .5em; display:none;">
-          <a id="settings-close">Close</a>
-          <h4 class="settings-label">Show artwork</h4>
+        <div id="settings" style="display:none;">
           <div style="padding: .5em;margin: .5em;">
-            <input type="radio" name="search-distance" value="zip">Within the same ZIP </br>
-            <input disabled type="radio" name="search-distance" value="half-mile">Within 1/2 mile </br>
-            <input disabled type="radio" name="search-distance" value="mile">Within 1 mile </br>
+            <a id="settings-close">Close</a>
+            <h4 class="settings-label">Show artwork</h4>
+            <div style="padding: .5em;margin: .5em;">
+              <input type="radio" name="search-distance" value="zip">Within the same ZIP </br>
+              <input disabled type="radio" name="search-distance" value="half-mile">Within 1/2 mile </br>
+              <input disabled type="radio" name="search-distance" value="mile">Within 1 mile </br>
+            </div>
           </div>
         </div>
 
@@ -63,7 +65,7 @@
               integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
               crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/sammy.js/0.7.6/sammy.min.js"></script>
-      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBLQ4nGVBlW17cw7NEDzvnBKx5e4gwcfo&callback=daamMapInit"
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBBLQ4nGVBlW17cw7NEDzvnBKx5e4gwcfo&callback=daam.mapInit"
               async defer></script>
 
       <!-- app  -->

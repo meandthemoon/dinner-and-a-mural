@@ -137,7 +137,7 @@ tbody tr.clickable:hover {
 
 .bottom { bottom: 0; }
 
-.top.banner {
+.top.banner, #settings {
     border-bottom: 1px solid #d7d787;
     position: relative;
 }

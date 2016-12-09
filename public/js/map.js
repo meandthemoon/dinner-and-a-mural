@@ -1,5 +1,9 @@
 var daamMap = function ( ui, state ) {
-  var 
+  var
+  center = {
+    lng: -76.61111667463689, // coordinates[0]
+    lat: 39.29040310219014   // coordinates[1]
+  },
   map = null,
   pins = [],
   features = {

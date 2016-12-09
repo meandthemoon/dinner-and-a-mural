@@ -65,6 +65,7 @@ var daamMurals = function ( ui, state ) {
           .get(function ( error, results ) {
             if (!error) {
               artworks = results;
+              state.channels.ArtworksReady.put(true);
             } else {
               alert(' HTTP ERROR Murals are broken :('); }
           });
