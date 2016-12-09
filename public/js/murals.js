@@ -1,7 +1,8 @@
 var daamMurals = function ( ui, state ) {
 
   var // UI
-  murals = ui.select('#murals'),
+  murals = ui.select('#murals')
+    .style('display', 'none'),
   listsContainer = murals.append('div')
     .attr('class', 'list-views'),
   emptyView = listsContainer.append('div')
@@ -72,7 +73,12 @@ var daamMurals = function ( ui, state ) {
       };
     }()),
 
-    render: listViewTable.render
+    render: function ( data ) {
+      if (data) {
+        murals.style('display', 'block');}
+
+      listViewTable.render(data);
+    }
 
   };
 

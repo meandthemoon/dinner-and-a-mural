@@ -23,6 +23,11 @@ window.daam = (function ( ui, state ) {
   }
 
   function initUI ( ) {
+
+    function getListViewHeight ( ) {
+      return window.innerHeight / 2 - 190;
+    }
+
     resizeDisplay(window.innerHeight, window.innerWidth);
     window.onresize = function ( e ) {
       resizeDisplay(e.target.innerHeight,
@@ -32,7 +37,7 @@ window.daam = (function ( ui, state ) {
     function resizeDisplay ( wHeight, wWidth ) {
       ui.select('#app').style('height', wHeight + 'px');
       ui.select('#map').style('width', function ( ) {
-        return Math.round(wWidth / 2) + 'px';
+        return Math.floor(wWidth / 2) + 'px';
       });
 
       ui.select('.workspace')
@@ -40,6 +45,9 @@ window.daam = (function ( ui, state ) {
         .style('width', function ( ) {
           return Math.round(wWidth /2) + 'px';
         });
+
+      ui.selectAll('.list-views')
+        .style('max-height', getListViewHeight() + 'px');
     }
 
     // ........ combine handlers ( toggle fn )................

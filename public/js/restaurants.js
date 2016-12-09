@@ -1,7 +1,8 @@
 window.daamRestaurants = function ( ui, state ) {
   
   var // UI
-  restaurants = ui.select('#restaurants'),
+  restaurants = ui.select('#restaurants')
+    .style('display', 'none'),
 
   // elements displaying selected restaurant
   activeContainer = restaurants
@@ -33,6 +34,7 @@ window.daamRestaurants = function ( ui, state ) {
         click: function ( d ) {
           if (!d.locationpoint) { return; } // ...
           state.channels.ActiveRestaurant.put(d);
+          restaurants.style('display', 'block');
         }
       },
       column: [{ heading: 'Restaurant',
@@ -91,6 +93,7 @@ window.daamRestaurants = function ( ui, state ) {
           .get(function ( error, results ) {
             if (!error) {
               var restaurant = results[0] || {};
+              restaurants.style('display', 'block');
               state.channels.ActiveRestaurant.put(restaurant);
             } else {
               alert(' HTTP ERROR - Restaurants are broken :('); }
@@ -98,7 +101,12 @@ window.daamRestaurants = function ( ui, state ) {
       };
     }()),
 
-    render: listViewTable.render,
+    render: function ( data ) {
+      if (data) {
+        restaurants.style('display', 'block'); }
+
+      listViewTable.render(data);
+    }
 
   };
 
