@@ -11,7 +11,7 @@ window.daamDataTable = (function ( ui ) {
 
     var api = {
       render: (function ( mystate ) {
-        return function renderRestaurant ( data ) {
+        return function ( data ) {
 
           if (!data || !data.length) {
             return owner.style('display', 'none');
@@ -51,31 +51,24 @@ window.daamDataTable = (function ( ui ) {
 
           rows.exit().remove();
 
-          if (mystate.rendered) { return; }
+          if (mystate.rendered) {
+            return thead
+              .selectAll('td')
+              .on('click', click_renderSorted.bind(null, data));
+          }
           mystate.rendered = true;
 
-          var heading = thead.append('tr');
-          heading.selectAll('td')
-            .data(colOptions)
+          var
+          heading = thead.append('tr'),
+          headingCols = heading
+            .selectAll('td')
+            .data(colOptions);
+
+          headingCols
             .enter()
             .append('td')
-            // Sorting based on columnar labels (fwd/bwd)
-            .on('click', function ( d, i ) {
-              var
-              key = colOptions[i].dataKey,
-              dir = mystate.sortDirection =
-                mystate.sortDirection ? 0 : 1;
-
-              api.render(data.sort(function ( a, b ) {
-                var
-                aVal = getKeyVal(key, a),
-                bVal = getKeyVal(key, b),
-                comp = ((aVal ? aVal.toString().toUpperCase() : '') <
-                        (bVal ? bVal.toString().toUpperCase() : ''));
-
-                return dir ? (comp ? 1 : -1) : (comp ? -1 : 1);
-              }));
-            })
+          // Sorting based on columnar labels (fwd/bwd)
+            .on('click', click_renderSorted.bind(null, data))
             .text(function ( _, i ) {
               return colOptions[i].heading;
             });
@@ -85,6 +78,24 @@ window.daamDataTable = (function ( ui ) {
               return getKeyVal(option.dataKey, d);
             });
           }
+
+          function click_renderSorted ( data, d, i ) {
+            var
+            key = colOptions[i].dataKey,
+            dir = mystate.sortDirection =
+              mystate.sortDirection ? 0 : 1;
+
+            api.render(data.sort(function ( a, b ) {
+              var
+              aVal = getKeyVal(key, a),
+              bVal = getKeyVal(key, b),
+              comp = ((aVal ? aVal.toString().toUpperCase() : '') <
+                      (bVal ? bVal.toString().toUpperCase() : ''));
+
+              return dir ? (comp ? 1 : -1) : (comp ? -1 : 1);
+            }));
+          }
+          
         };
       }({ rendered: false,
           sortDirection: 1 }))
