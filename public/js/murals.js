@@ -1,22 +1,33 @@
 var daamMurals = function ( ui, state ) {
+
   var // UI
   murals = ui.select('#murals'),
-  tableView = murals.append('div').append('table'),
-  thead = tableView.append('thead')
-    .append('tr')
-    .selectAll('td')
-    .data(['Artwork Title', 'Address', 'Artist(s)'])
-    .enter().append('td').text(String),
-  
-  emptyView = murals.append('div')
+  listsContainer = murals.append('div')
+    .attr('class', 'list-views'),
+  emptyView = listsContainer.append('div')
     .style('display', 'none')
     .attr('class', 'nothing-found')
-    .text('... no results'),
-  viewBody = tableView.append('tbody');
+    .text('... no results');
 
   var
   artworks = null,
   settings = {};
+
+  var listViewTable = daamDataTable({
+    owner: listsContainer.append('table').attr('class', 'atd'),
+    tableOptions: {
+      row: { /* */ },
+      column: [{ heading: 'Artwork Title',
+                 dataKey: getTitle,
+                 class:   'a-title' },
+               { heading: 'Address',
+                 dataKey: 'addressofartwork',
+                 class:   'a-address' },
+               { heading: 'Artist(s)',
+                 dataKey: getCredits,
+                 class:   'a-credits' }]
+    }
+  });
 
   var api = {
     search: (function ( mystate ) {
@@ -60,76 +71,8 @@ var daamMurals = function ( ui, state ) {
       };
     }()),
 
-    render: (function ( mystate ) {
-      return function ( data ) {
-        if (!data) {        // hide
-          murals.style('display', 'none');
-          return;
-        }
-        if (!data.length) { // display "no results..."
-          emptyView.style('display', 'block');
-          return;
-        } else {            // display results
-          murals.style('display', 'block');
-          emptyView.style('display', 'none'); }
+    render: listViewTable.render
 
-        var
-        rows = viewBody.selectAll('tr')
-          .data(data),
-        cells = rows.selectAll('td')
-          .data(makeCellData),
-        newRows = rows.enter().append('tr'),
-        newRowCells = newRows.selectAll('td')
-          .data(makeCellData);
-
-        cells.enter()
-          .append('td')
-          .attr('class', function ( d, i ) {
-            return mystate.cells.classes[i]; });
-
-        newRowCells.enter()
-          .append('td')
-          .attr('class', function ( d, i ) {
-            return mystate.cells.classes[i]; })
-          .text(String);
-
-        cells.text(identity);
-        newRowCells.text(String);
-
-        rows.on('click', function ( d, i ) { });
-
-        rows.exit().remove();
-        
-        function makeCellData ( d, i, a ) {
-          return [getTitle(d), d.addressofartwork, getCredits(d)];
-        }
-        
-        function getPinTitle ( d ) {
-          if (!d.titleofartwork ||
-              /unknown/i.test(d.titleofartwork)) {
-            return ((d.artistfirstname || 'Mr./Miss.') +
-                    ' ' +
-                    (d.artistlastname  || 'Unknown'));
-          } else { return d.titleofartwork; }
-        }
-
-        function getTitle ( d ) {
-          if (!d.titleofartwork ||
-              /unknown/i.test(d.titleofartwork)) {
-            return '-no title-';
-          }
-          return '"' + d.titleofartwork + '"';
-        }
-
-        function getCredits ( d ) {
-          return 'By ' + ((d.artistfirstname || 'Mr./Miss.') +
-                          ' ' +
-                          (d.artistlastname  || 'Unknown'));
-        }
-
-      };
-    }({ cells: { classes: ['a-title', 'a-address', 'a-credits'] },
-        marker: { icon: 'http://labs.google.com/ridefinder/images/mm_20_blue.png' }}))
   };
 
   api.loadArtworks();
@@ -147,4 +90,18 @@ var daamMurals = function ( ui, state ) {
   });
 
   return api;
+
+  function getTitle ( d ) {
+    if (!d.titleofartwork ||
+        /unknown/i.test(d.titleofartwork)) {
+      return '-no title-';
+    }
+    return '"' + d.titleofartwork + '"';
+  }
+
+  function getCredits ( d ) {
+    return 'By ' + ((d.artistfirstname || 'Mr./Miss.') +
+                    ' ' +
+                    (d.artistlastname  || 'Unknown'));
+  }
 };

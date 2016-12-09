@@ -65,9 +65,9 @@ var api = module.exports = function ( models, router ) {
 
   // given a search term, returns a collection of restaurants
   //  whose names, street, or neighborhood match
-  router.get('/restaurants', function ( req, res, _ ) {
-    var search = req.query.search;
-    if (!search) {
+  router.get('/restaurants/search/:search_string', function ( req, res, _ ) {
+    var search_string = req.params.search_string;
+    if (!search_string) {
       return res.status(400).send({ message: 'send search param' }); }
 
     api.handlers
@@ -76,15 +76,38 @@ var api = module.exports = function ( models, router ) {
         // Limit attributes
         null, // select *
         { $or: [
-          { location_1_location: { $like:'%'+search+'%' }},
-          { name:                { $like:'%'+search+'%' }},
-          { neighborhood:        { $like:'%'+search+'%' }}
-        ]})
+          {location_1_location: { $like:'%'+search_string+'%' }},
+          {name:                { $like:'%'+search_string+'%' }},
+          {neighborhood:        { $like:'%'+search_string+'%' }} ]})
+
       .then(function ( results ) {
         return res.json(results);
       })
+
       .catch(function ( error ) {
         console.log(error);
+        return res
+          .status(500)
+          .send({ message: 'ERROR',
+                  error: error,
+                  stack: error.stack });
+      });
+  });
+
+  router.get('/restaurants/:id', function ( req, res, _ ) {
+    api.handlers
+      .getRestaurants(
+        // REFACTOR
+        // Limit attributes
+        null, // select *
+        { id: req.params.id })
+
+      .then(function ( results ) {
+        return res.json(results);
+      })
+
+      .catch(function ( error ) {
+        console.error(error);
         return res
           .status(500)
           .send({ message: 'ERROR',

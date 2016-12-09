@@ -1,112 +1,140 @@
 window.daamRestaurants = function ( ui, state ) {
+  
   var // UI
   restaurants = ui.select('#restaurants'),
-  tableView = restaurants.append('div').append('table'),
-  thead = tableView.append('thead')
-    .append('tr')
-    .selectAll('td')
-    .data(['Restaurant', 'Address', 'Neighborhood'])
-    .enter().append('td').text(String),
-  emptyView = restaurants.append('div')
+
+  // elements displaying selected restaurant
+  activeContainer = restaurants
+    .append('div')
+    .attr('class', 'r-active-view-c'),
+  activeHeading = activeContainer
+    .append('p')
+    .attr('class', 'r-viewing')
+    .text('Currently Viewing'),
+  activeView = activeContainer
+    .append('table')
+    .attr('class', 'r-active-view')
+    .append('tbody')
+    .append('tr'), // selected restaurant
+
+  // displays for searched-for or "no-results..."
+  listsContainer = restaurants.append('div')
+    .attr('class', 'list-views'),
+  emptyView = listsContainer.append('div')
     .style('display', 'none')
     .attr('class', 'nothing-found')
-    .text('... no results'),
-  viewBody = tableView.append('tbody');
+    .text('... no results');
+
+  var listViewTable = daamDataTable({
+    owner: listsContainer.append('table').attr('class', 'rtd'),
+    tableOptions: {
+      row: {
+        class: 'clickable',
+        click: function ( d ) {
+          if (!d.locationpoint) { return; } // ...
+          state.channels.ActiveRestaurant.put(d);
+        }
+      },
+      column: [{ heading: 'Restaurant',
+                 dataKey: 'name',
+                 class:   'r-name' },
+               { heading: 'Address',
+                 dataKey: 'location_1_location',
+                 class:   'r-address' },
+               { heading: 'Neighborhood',
+                 dataKey: 'neighborhood',
+                 class:   'r-hood' }]
+    }
+  });
+
+  // "component" state
+  var cState = { xhr: null };
 
   var api = {
-    // search for restaurants
-    search: (function ( mystate ) {
+    // search for restaurants via <input>
+    search: (function ( ) {
       var
       parseJson = function ( xhr ) {
         return JSON.parse(xhr.responseText);
       },
-      path = '/api/restaurants';
+      path = '/api/restaurants/search/';
 
-      return function restarauntSearch ( search ) {
-        if (mystate.req) { mystate.req.abort(); }
+      return function restarauntSearch ( searchStr ) {
+        if (cState.xhr) { cState.xhr.abort(); }
 
-        var query = '?search='+search;
-
-        mystate.req = ui.request(path+query)
+        cState.xhr = ui.request(path+searchStr)
           .header('Content-Type', 'application/json')
           .response(parseJson)
           .get(function ( error, results ) {
             if (!error) {
-              api.render(results);
+              state.channels.RestaurantList.put(results);
             } else {
               alert(' HTTP ERROR - Restaurants are broken :('); }
           });
       };
-    }({ req: null })),
+    }()),
 
-    render: (function ( mystate ) {
-      return function renderRestaurant ( data ) {
-        state.channels.RestaurantList.put(data);
+    // by clicking or location.hash
+    getById: (function ( ) {
+      var
+      parseJson = function ( xhr ) {
+        return JSON.parse(xhr.responseText);
+      },
+      path = '/api/restaurants/';
 
-        restaurants.style('display', 'block');
+      return function ( id ) {
+        if (cState.xhr) { cState.xhr.abort(); }
 
-        if (!data || !data.length) {
-          emptyView.style('display', 'block');
-        } else {
-          emptyView.style('display', 'none');
-        }
+        cState.xhr = ui.request(path+String(id))
+          .header('Content-Type', 'application/json')
+          .response(parseJson)
+          .get(function ( error, results ) {
+            if (!error) {
+              var restaurant = results[0] || {};
+              state.channels.ActiveRestaurant.put(restaurant);
+            } else {
+              alert(' HTTP ERROR - Restaurants are broken :('); }
+          });
+      };
+    }()),
 
-        var
-        rows = viewBody.selectAll('tr')
-          .data(data),
-        cells = rows.selectAll('td')
-          .data(makeCellData),
-        newRows = rows.enter().append('tr'),
-        newRowCells = newRows.selectAll('td')
-          .data(makeCellData);
+    render: listViewTable.render,
+
+  };
+
+  state.channels.Search.take(api.search);
+  state.channels.RestaurantGet.take(api.getById);
+  state.channels.RestaurantList.take(api.render);
+
+  daamActiveRestaurant(ui, state);
+  api.render();
+
+  return api;
+
+  // child component(s)
+  function daamActiveRestaurant ( ui, state ) {
+    var api = {
+      render: function render ( d ) {
+      var cells = activeView
+            .selectAll('td')
+            .data([d.name,
+                   d.location_1_location,
+                   d.neighborhood]);
 
         cells.enter()
           .append('td')
           .attr('class', function ( d, i ) {
-            return mystate.cells.classes[i];
+            return i === 0 ? 'r-name' : '';
           })
-          .style('color', function ( d, i ) {
-            return mystate.cells.colors[i]; });
-
-        newRowCells.enter()
-          .append('td')
-          .attr('class', function ( d, i ) {
-            return mystate.cells.classes[i];
-          })
-          .style('color', function ( d, i ) {
-            return mystate.cells.colors[i]; })
           .text(String);
 
-        cells.text(identity);
-        newRowCells.text(String);
-        
-        newRows.on('click', function ( d, i ) {
-          console.log('r-clicked');
-          console.log(d.name);
-          if (d.locationpoint) {
-            state.channels.ActiveRestaurant.put(d);
-          }
-        });
-        
-        rows.exit().remove();
+        cells.text(String);
+      }
+    };
 
-        function makeCellData ( d, i, a ) {
-          return [d.name,
-                  d.location_1_location,
-                  d.neighborhood,
-                  'DEL'];
-        }
-      };
-    }({
-      cells: {
-        colors: ['#caca86','#857575', '#8d6552', '#870000'],
-        classes: ['r-name', 'r-address', 'r-hood', 'del-r']},
-      marker: {
-        icon: 'http://labs.google.com/ridefinder/images/mm_20_yellow.png' }}))
-  };
+    state.channels.ActiveRestaurant.take(api.render);
 
-  // take from the search channel
-  state.channels.Search.take(api.search);
-  
-  return api;
+    return api;
+  }
+
 };

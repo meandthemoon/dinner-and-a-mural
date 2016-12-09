@@ -7,13 +7,12 @@ window.channel = function ( ) {
   function safeTake ( fnOfData, data ) {
     try { fnOfData(data); }
     catch ( e ) { console.error(e); }
+    // fnOfData(data); // for better debugging stack
   }
 
   return {
-    // put data on the channel
+    // `put` data on the channel
     put: function ( data ) {
-      // console.log('put on channel data');
-      // console.log(data);
       takes.forEach(function ( fnOfData ) {
         safeTake.apply(null, [fnOfData, data]);
       });
@@ -23,7 +22,7 @@ window.channel = function ( ) {
       if (!fnOfData.name) { console.warn('no name'); }
       takes.push(fnOfData);
     },
-    // removed named fn from `takes` list
+    // removes the named fn from `takes` list
     remove: function ( name ) {
       takes = takes.filter(function ( fnOfData ) {
         return fnOfData.name === name;

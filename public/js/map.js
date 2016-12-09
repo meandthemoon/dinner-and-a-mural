@@ -55,6 +55,8 @@ var daamMap = function ( ui, state ) {
 
   window.daamMapInit = api.init;
 
+
+  // subscribe to system events
   state.channels.ActiveRestaurant.take(function ( r ) {
     api.unpinByType('restaurant');    
     var pinInfo = {
