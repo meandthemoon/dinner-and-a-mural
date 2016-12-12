@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-if (process.argv.indexOf('--_instrument') > -1) {
+if (process.argv.indexOf('--instr') > -1) {
   require('../_instrument')();
 }
 

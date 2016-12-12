@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Joining Contrast Security | Project #4 : Language Specialist ( Agent Engineer ) | NodeJS",
   "scripts": {
-    "setup": "node ./importer",
+    "run-with-instr": "node --harmony ./bin/www --instr",
     "run": "node --harmony ./bin/www",
+    "setup": "node ./importer",
     "start": "node ./bin/www",
     "test": "mocha ./test"
   },
