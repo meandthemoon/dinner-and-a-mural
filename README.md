@@ -13,9 +13,9 @@ Restaurant and art data are provided by OpenBaltimore.
 The following must be present on the user's computer before running the setup steps below. 
 
 - MySQL Server. See: http://dev.mysql.com/doc/refman/5.7/en/installing.html
-- NodeJS & npm.  See: https://nodejs.org/en/
+- Node.js & npm.  See: https://nodejs.org/en/
 
-Once NodeJS is installed, you can use its package manager to install the following:
+Once Node.js is installed, you can use its package manager to install the following:
 
 - grunt-cli. Use the command `sudo npm install -g grunt-cli`.
 - mocha. Use the command `sudo npm install -g mocha` ( required only to run tests ).
