@@ -10,7 +10,7 @@ Restaurant and art data are provided by OpenBaltimore.
 
 ### Prerequisite Software Installs
 
-The following must be present on the users computer before running the setup steps below. 
+The following must be present on the user's computer before running the setup steps below. 
 
 - MySQL Server. See: http://dev.mysql.com/doc/refman/5.7/en/installing.html
 - NodeJS & npm.  See: https://nodejs.org/en/
