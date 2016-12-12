@@ -54,4 +54,13 @@ From the root directory, run `npm run-script run` ( woof! :) ) to start the appl
 
 From the root directory, run `npm test` to prompt the full set of unit and integration tests. Test results will be logged to the console.
 
-## Open Items
+## Future Enhancements
+
+1. Enhance the key for the restaurant and mural/public artwork display in the UI for better usability
+2. Expand the settings for client side state and routing
+3. Include a directional indicator for sorting/ordering options in the grid
+4. Add the ability to add/delete restaurants and murals/public artwork
+5. Implement further automated UI tests
+6. Log count of string objects created for a single page request or RESTful request (outstanding)
+7. Implement more accurate request time logging (sub millisecond)
+8. Implement another data point exploration (outstanding)
