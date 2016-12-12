@@ -1,6 +1,6 @@
 # Dinner and a Mural
 
-For food and art lovers.
+For those who love food and art.
 
 Baltimore is filled with both of these. This simple app lets you search the city for restaurants and shows you what public artwork is nearby.
 
