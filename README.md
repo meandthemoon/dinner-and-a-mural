@@ -56,11 +56,15 @@ From the root directory, run `npm test` to prompt the full set of unit and integ
 
 ## Future Enhancements
 
-1. Enhance the key for the restaurant and mural/public artwork display in the UI for better usability
-2. Expand the settings for client side state and routing
-3. Include a directional indicator for sorting/ordering options in the grid
-4. Add the ability to add/delete restaurants and murals/public artwork
-5. Implement further automated UI tests
-6. Log count of string objects created for a single page request or RESTful request (outstanding)
-7. Implement more accurate request time logging (sub millisecond)
-8. Implement another data point exploration (outstanding)
+1. Change the verbiage in the UI instructions to the following:
+
+*"Hello,try searching below for your favorite restaurant in Baltimore and see if they have public murals or other artwork nearby.  You can search by either all or part of the restaurant name, street name, or neighborhood of interest.  In the results, just select the actual restaurant you are interested in to get you started on your dinner and mural!  Fun!"*
+
+2. Enhance the key for the restaurant and mural/public artwork display in the UI for better usability
+3. Expand the settings for client side state and routing
+4. Include a directional indicator for sorting/ordering options in the grid
+5. Add the ability to add/delete restaurants and murals/public artwork
+6. Implement further automated UI tests
+7. Log count of string objects created for a single page request or RESTful request (outstanding)
+8. Implement more accurate request time logging (sub millisecond)
+9. Implement another data point exploration (outstanding)
