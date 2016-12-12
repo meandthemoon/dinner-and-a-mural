@@ -1,6 +1,6 @@
 #!/bin/bash
 
-un="anonymous" # username={{appUser}}
+un="dinner_and_a_mural" # username={{appUser}}
 pw="I_@m_@n0nym0us!" # password={{appUserPassword}}
 database="OpenBaltimore" # database={{databaseName}}
 
