@@ -44,7 +44,7 @@ The outome the each build step will log to the terminal as well as when it compl
 
 From the root directory, run `npm run-script run` ( woof! :) ) to start the application. Visit the web app via the URL: `localhost:3030/app.html`.
 
-To have the app run with additional instrumentation/profiling enabled, run `npm run-script run-with-instr`. This will log profiling data to a file `[project_dir]/_instrument/profile-output.dump`. While the applicaiton is running, you can view the profile data that appends to the file by running `tail -f _instrument/profile-output.dump`.
+To have the app run with additional instrumentation/profiling enabled, run `npm run-script run-with-instr`. This will log profiling data to a file `[project_dir]/_instrument/profile-output.dump`. While the applicaiton is running, you can view the profile data that appends to the file by running `tail -f _instrument/profile-output.dump` (non-Windows users).
 
 ### Testing
 
