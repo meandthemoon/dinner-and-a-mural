@@ -2,7 +2,7 @@
 
 For those in Baltimore who love food and art.
 
-Baltimore is filled with both of these. This simple app lets you search the city for restaurants and shows you what public artwork is nearby.
+Baltimore is filled with both of these. This simple app lets you search the city for restaurants and shows you what public artwork is nearby. In the restaurant search results, clicking on an item will display the nearby artwork below, listed by the piece's title, address and artist(s). Also, the map to the left will drop a pin for the restaurant and each artwork site.
 
 Restaurant and art data are provided by OpenBaltimore.
 
@@ -60,8 +60,10 @@ From the root directory, run `npm test` to prompt the full set of unit and integ
 - Expand the "settings" section to include more options, and to adopt client side routing
 - Include a directional indicator for sorting/ordering options in the grid
 - Add the ability to add/delete restaurants and murals/public artwork. This will be very useful since the dataset is not current.
+- Incorporate more interactive map features - title of restaurant/artwork, pin bounce when a list item is hovered by mouse, etc
+- Remove grunt-cli from the build dependencies ( local grunt would be sufficient )
 - Implemnt further unit tests for web-server components
-- Implement further automated UI tests
+- Implement further automated UI, and client-side unit tests
 - Instrumentation / Profiling
   - Implement more accurate request time logging - to sub millisecond ( currently to ms )
   - Count string objects ( and other types ) created for each web request (outstanding)
