@@ -10,20 +10,34 @@
   <body>
 
     <div id="app">
+      <!-- style in-line so we don't have to wait for CSS -->
+      <div class="load-mask"
+           style="position:fixed;width:100%;height:100%;z-index:111;background:#333;text-align:center;vertical-align:middle;padding-top:3em;">
+        <h1>Dinner And A Mural</h1>
+        <h3>... Loading ...</h3>
+      </div>
       <!-- google map -->
       <div id="map"></div>
       <div class="workspace">
 
         <!-- NICE-TO-HAVE -->
         <!-- application settings -->
-        <div id="settings" style="display:none;">
+        <div id="settings" style="display:none;height:100%">
           <div style="padding: .5em;margin: .5em;">
             <a id="settings-close">Close</a>
-            <h4 class="settings-label">Show artwork</h4>
+            <h4 class="settings-label">When viewing a restaurant, show artwork</h4>
             <div style="padding: .5em;margin: .5em;">
-              <input type="radio" name="search-distance" value="zip">Within the same ZIP </br>
-              <input disabled type="radio" name="search-distance" value="half-mile">Within 1/2 mile </br>
-              <input disabled type="radio" name="search-distance" value="mile">Within 1 mile </br>
+              <input id="setting-search-zip" disabled type="radio" name="search-distance" value="zip">
+              Within the same ZIP </br>
+              <input disabled type="radio" name="search-distance" value="half-mile">
+              Within 1/2 mile </br>
+              <input disabled type="radio" name="search-distance" value="mile">
+              Within 1 mile </br>
+            </div>
+            <br/>
+            <h4 class="settings-label">Show Artwork Images in Background</h4>
+            <div style="padding: .5em;margin: .5em;">
+              <input id="setting-rotateImages" type="checkbox" name="rotateImages">Yes</br>
             </div>
           </div>
         </div>
@@ -34,7 +48,7 @@
                style="_display:none;">Settings</a>
             <p>Hello.</p>
             <p>Try searching for your favorite <span class="r-name">restaurants</span> in Baltimore and see
-              if they have public <span class="a-title">murals</span> nearby.</p>
+              if they have public <span class="a-title">murals or other artwork</span> nearby.</p>
             <p>You could eat there and then check them out. Fun!</p>
             <div class="margin1 search" style="text-align:center;">
               <input id="search"

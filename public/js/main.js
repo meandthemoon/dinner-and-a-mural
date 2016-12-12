@@ -17,9 +17,22 @@ window.daam = (function ( ui, state ) {
     }
   };
 
+  var userSettings = (function ( visited, presets ) {
+    if (!visited) {
+      localStorage.setItem('d_a_m', new Date().toISOString());
+      localStorage.setItem('muralRange', presets.muralRange);
+      localStorage.setItem('rotateImages', presets.rotateImages);
+    } 
+    return {
+      d_a_m: localStorage.getItem('d_a_m'),
+      muralRange: localStorage.getItem('muralRange'),
+      rotateImages: localStorage.getItem('rotateImages'),
+    };
+  }(localStorage.getItem('d_a_m'), state.defaultSettings));
+
   function okLaunch ( ) {
-    initUI();
     initRouting();
+    initUI();
   }
 
   function initUI ( ) {
@@ -50,41 +63,77 @@ window.daam = (function ( ui, state ) {
         .style('max-height', getListViewHeight() + 'px');
     }
 
-    // ........ combine handlers ( toggle fn )................
+    // .......................................................
+    // user preferences
     var openSettings = ui.select('#settings-open')
         .on('click', function ( ) {
           ui.select('#settings').style('display', 'block');
-          ui.select('.top.banner').style('display', 'none');
-          ui.select('#restaurants').style('display', 'none');
-          ui.select('#murals').style('display', 'none');
         });
+
     var closeSettings = ui.select('#settings-close')
         .on('click', function ( ) {
           ui.select('#settings').style('display', 'none');
-          ui.select('.top.banner').style('display', 'block');
-          ui.select('#restaurants').style('display', 'block');
-          ui.select('#murals').style('display', 'block');
         });
-    // .......................................................
 
-    // background rot
+    ui.select('#setting-rotateImages')
+      .on('click', function ( ) {
+        localStorage.setItem('rotateImages', this.checked);
+        toggleImageRotation();
+      })
+      .node()
+      .checked = userSettings.rotateImages === 'true' ? true : false;
+
+    // others not supported yet...
+    ui.select('#setting-search-zip')
+      .node()
+      .checked = true;
+
+    // background rotation
     // wrap in fn
-    setInterval(
-      (function ( i, a ) {
-        return function ( ) {
-          i = (++i >= a.length ? 0 : i);
-          ui.select('body').style('background-image', a[i]);
-        };
-      })(0, ["url('/images/221_Pulaski_M._Santos.JPG')",
-             "url('/images/hands.JPG')",
-             "url('/images/ferguson-ramsay___monroe_sts.JPG')"]),
-      5000);
+    var toggleImageRotation = (function ( initRot ) {
+      return function ( ) {
+        if (initRot.process) {
+          clearInterval(initRot.process);
+          initRot.process = null;
+          ui.select('body').style('background-image', 'none');
+          return;
+        }
+        initRot.process = setInterval(
+          (function ( i, a ) {
+            return function ( ) {
+              i = (++i >= a.length ? 0 : i);
+              ui.select('body').style('background-image', a[i]);
+            };
+          })(0, ["url('/images/221_Pulaski_M._Santos.JPG')",
+                 "url('/images/hands.JPG')",
+                 "url('/images/ferguson-ramsay___monroe_sts.JPG')",
+                 "url('/images/miller-north-ave.jpg')",
+                 "url('/images/NicholasTolls.jpg')",
+                 "url('/images/M._Todd_FM_07.jpg')",
+                 "url('/images/P._Mason_Farmers_Market.jpg')"]),
+          5000);
+      };
+    }({ process: null }));
 
+    if (userSettings.rotateImages === 'true') {
+      toggleImageRotation();
+    }
+
+    // .......................................................
+    
     var search = ui.select('#search')
         .on('input', function ( ) {
           if (this.value.length < 3) { return; }
           state.channels.Search.put(this.value); 
         });
+
+    ui.select('.load-mask')
+      .transition()
+      .delay(1500)
+      .duration(800)
+      .style('opacity', '0')
+      .transition()
+      .remove();
   }
 
   function initRouting ( ) {
