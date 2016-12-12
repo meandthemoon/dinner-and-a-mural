@@ -62,8 +62,9 @@ From the root directory, run `npm test` to prompt the full set of unit and integ
 - Add the ability to add/delete restaurants and murals/public artwork. This will be very useful since the dataset is not current.
 - Incorporate more interactive map features - title of restaurant/artwork, pin bounce when a list item is hovered by mouse, etc
 - Resolve the few geolocation rounding issues present in some restaurant data which misrepresent the true location on the map
+- Add feature to allow user to specify radius for which display artwork near restaurant
 - Remove grunt-cli from the build dependencies ( local grunt would be sufficient )
-- Implemnt further unit tests for web-server components
+- Implement further unit tests for web-server components
 - Implement further automated UI, and client-side unit tests
 - Instrumentation / Profiling
   - Implement more accurate request time logging - to sub millisecond ( currently to ms )
