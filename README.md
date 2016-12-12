@@ -38,7 +38,7 @@ After cloning the project, in a terminal, `cd` into the root project folder and 
 
 If the MySQL root administrator's password is not known (or chosen not to be used), run the command using the username of an administrator account with known credentials. Enter the user's password when at the prompt's request.
 
-The outome the each build step will log to the terminal as well as
+The outome the each build step will log to the terminal as well as when it completes.
 
 ### Launching
 
