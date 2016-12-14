@@ -9,7 +9,7 @@ username=$1
 ### remove
 destroy="SET FOREIGN_KEY_CHECKS = 0;"
 destroy+="DROP DATABASE IF EXISTS $database;"
-destroy+="DELETE FROM mysql.user WHERE User = '$un';"
+destroy+="DROP USER $un@localhost;"
 mysql -u $username -p -e "$destroy"
 
 echo " - Dropping database and user"
