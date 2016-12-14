@@ -1,6 +1,6 @@
 #!/bin/bash
 
-un="dinner_and_a_mural" # username={{appUser}}
+un="d_and_a_mural" # username={{appUser}}
 pw="I_@m_@n0nym0us!" # password={{appUserPassword}}
 database="OpenBaltimore" # database={{databaseName}}
 
@@ -9,7 +9,7 @@ username=$1
 ### remove
 destroy="SET FOREIGN_KEY_CHECKS = 0;"
 destroy+="DROP DATABASE IF EXISTS $database;"
-destroy+="DROP USER IF EXISTS '$un'@'localhost';"
+destroy+="DELETE FROM mysql.user WHERE User = '$un';"
 mysql -u $username -p -e "$destroy"
 
 echo " - Dropping database and user"

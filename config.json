@@ -5,7 +5,7 @@
   },
   "persistence": {
     "database": "OpenBaltimore",
-    "username": "dinner_and_a_mural",
+    "username": "d_and_a_mural",
     "password": "I_@m_@n0nym0us!",
     "options": { "dialect": "mysql",
                  "pool": { "min": 1,

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-un="dinner_and_a_mural" # username={{appUser}}
+un="d_and_a_mural" # username={{appUser}}
 pw="I_@m_@n0nym0us!" # password={{appUserPassword}}
 database="OpenBaltimore" # database={{databaseName}}
 
@@ -9,7 +9,7 @@ username=$1
 ### setup
 initialize="SET FOREIGN_KEY_CHECKS = 0;"
 initialize+="DROP DATABASE IF EXISTS $database;"
-initialize+="DROP USER IF EXISTS '$un'@'localhost';"
+initialize+="DELETE FROM mysql.user WHERE User = '$un';"
 initialize+="CREATE DATABASE IF NOT EXISTS $database;"
 initialize+="CREATE USER '$un'@'localhost' IDENTIFIED BY '$pw';"
 initialize+="GRANT ALL PRIVILEGES ON $database.* TO '$un'@'localhost';"
