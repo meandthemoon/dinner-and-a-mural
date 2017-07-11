@@ -62,18 +62,19 @@ var addGeoLookup = require('../datasets/address-locations');
   handlers = {
     // queury open baltimore apis and save to local disk
     '-i': function ( ) {
-      sources.forEach(function ( source ) {
-        var
-        token = config.open_baltimore['X-App-Token'],
-        dataReq = request({
-          headers: { 'X-App-Token': token,
-                     'Accept': 'application/json' },
-          method: 'GET',
-          url: source.url+'?$limit=1500'
-        }).pipe(require('fs').createWriteStream(source.saveTo));
+      // sources.forEach(function ( source ) {
+      //   var
+      //   token = config.open_baltimore['X-App-Token'],
+      //   dataReq = request({
+      //     headers: { 'X-App-Token': token,
+      //                'Accept': 'application/json' },
+      //     method: 'GET',
+      //     url: source.url+'?$limit=1500'
+      //   }).pipe(require('fs').createWriteStream(source.saveTo));
         
-        console.log(' - Fetching fresh', source.name, 'data');
-      });
+      //   console.log(' - Fetching fresh', source.name, 'data');
+      // });
+			console.log(' - Skipping export step and using included project data.');
     },
 
     // export local files ( existing or updated from import ) to database
