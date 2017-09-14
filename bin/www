@@ -9,7 +9,7 @@ http = require('http'),
 debug = require('debug')('join-the-team-p4-nodejs:server');
 
 var
-port = normalizePort('3030'),
+port = normalizePort(process.env.PORT || '3030'),
 config = require('../config'),
 dbConnect = require('../db'),
 routes = require('../routes'),
